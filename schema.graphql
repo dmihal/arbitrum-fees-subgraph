@@ -3,3 +3,8 @@ type Fees @entity {
   feesETH: BigDecimal!
   totalArbGas: BigInt!
 }
+
+type DateToBlock @entity {
+  id: ID!
+  blockNum: BigInt!
+}

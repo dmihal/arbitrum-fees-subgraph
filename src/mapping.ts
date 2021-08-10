@@ -1,5 +1,5 @@
 import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts"
-import { Fees } from "../generated/schema"
+import { Fees, DateToBlock } from "../generated/schema"
 import { ArbGasInfo } from "../generated/Fees/ArbGasInfo"
 import { ArbStatistics } from "../generated/Fees/ArbStatistics"
 
@@ -26,4 +26,13 @@ export function handleBlock(block: ethereum.Block): void {
   entity.totalArbGas = totalArbGas
   entity.feesETH += ethFees
   entity.save()
+
+  let timestampRoundedDown = block.timestamp.toI32() / 86400 * 86400
+  let dateEntity = DateToBlock.load(timestampRoundedDown.toString())
+
+  if (dateEntity == null) {
+    dateEntity = new DateToBlock(timestampRoundedDown.toString())
+    dateEntity.blockNum = block.number
+    dateEntity.save()
+  }
 }
