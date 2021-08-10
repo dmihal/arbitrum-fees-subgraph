@@ -1,0 +1,5 @@
+type Fees @entity {
+  id: ID!
+  feesETH: BigDecimal!
+  totalArbGas: BigInt!
+}
